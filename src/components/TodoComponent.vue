@@ -27,18 +27,14 @@ h2{
 import { nextTick } from 'vue';
 
 
-class Todo { 
-    constructor(name, done) {
-        this.name = name
-        this.done = done
-    }
-}
-
-const testTodo = new Todo("Tache de test", false);
+//const testTodo = new Todo("Tache de test", false);
 export default {
     data() {
         return {
-            todo: new Todo("", false),
+            todo: {
+                name: "",
+                done: false,
+            },
             todos: [],
             afficherChampNouveau: false,
         }
@@ -52,11 +48,16 @@ export default {
             
         },
         addNewTodo() {
-            this.todos.push(this.todo)
+            this.todos.push({
+                name: this.todo.name,
+                done: this.done,
+            })
+            this.todo.name = ""
+            this.afficherChampNouveau = false;
         },
     },
     created() {
-        this.todos.push(testTodo)
+        //this.todos.push(testTodo)
     }
 }
 
