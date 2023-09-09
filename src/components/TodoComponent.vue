@@ -4,7 +4,7 @@
             <h2>todo list</h2>
             <ul class="list-group">
                 <li class="list-group-item list-group-item-action active">
-                    <input type="checkbox" class="float-start form-check-input me-1 mb-1">
+                    <input type="checkbox" class="float-start form-check-input me-1 mb-1" v-model="allTodosIsDone">
 
                     <strong class="">Your Tasks</strong> 
                     <span class="float-end" @click="wantAdd"><i :class="afficherChampNouveau ? 'fa-solid text-danger fa-circle-minus': 'fa-solid fa-square-plus fa-lg'" id="boutonAddOrReset"></i></span>
@@ -38,6 +38,7 @@ export default {
                 done: false,
                 estEnModification: false,
             },
+            // allTodosIsDone: false,
             todos: [],
             afficherChampNouveau: false,
         }
@@ -79,6 +80,33 @@ export default {
             this.todos = this.todos.filter(function(todo){
                 return todo != thisTodo
             })
+        },
+        
+    },
+    // watch: {
+    //     allTodosIsDone() {
+    //         if(this.allTodosIsDone){
+    //             this.todos.forEach(todo => {
+    //                 todo.done = true;
+    //             });
+    //         }else{
+    //             this.todos.forEach(todo => {
+    //                 todo.done = false;
+    //             });
+    //         }
+    //         this.todos.every((todo) => todo.done === true)
+    //     },
+    // },
+    computed: {
+        allTodosIsDone:{
+            get () {
+               return this.todos.filter((todo) => todo.done==false).length == 0
+            },
+            set(value){
+                for(let i = 0; i<this.todos.length; i++){
+                    this.todos[i].done = value;
+                }
+            }
         }
     },
     created() {
