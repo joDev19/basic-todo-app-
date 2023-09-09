@@ -4,6 +4,8 @@
             <h2>todo list</h2>
             <ul class="list-group">
                 <li class="list-group-item list-group-item-action active">
+                    <input type="checkbox" class="float-start form-check-input me-1 mb-1">
+
                     <strong class="">Your Tasks</strong> 
                     <span class="float-end" @click="wantAdd"><i :class="afficherChampNouveau ? 'fa-solid text-danger fa-circle-minus': 'fa-solid fa-square-plus fa-lg'" id="boutonAddOrReset"></i></span>
                     <input v-show="afficherChampNouveau" type="text" class="form-control" name="" id="wantAddId" @keyup.enter="addNewTodo" v-model="todo_.name">
