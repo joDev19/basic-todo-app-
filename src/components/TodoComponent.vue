@@ -11,7 +11,7 @@
                 <li v-for="todo in todos" :key="todo.name" class="list-group-item" :class="{achieve: todo.done}">
                     <input v-model="todo.done" class="form-check-input me-1 mb-1 float-start" type="checkbox" value="" aria-label="...">
                     <span class="float-start">{{ todo.name }}</span>
-                    <span class="float-end"><i class="fa-solid text-danger fa-circle-minus"></i></span>
+                    <span class="float-end" @click="deleteTodo(todo)"><i class="fa-solid text-danger fa-circle-minus"></i></span>
                     <input type="text" class="form-control" name="" id="">
                 </li>
             </ul>
@@ -55,6 +55,11 @@ export default {
             this.todo.name = ""
             this.afficherChampNouveau = false;
         },
+        deleteTodo(thisTodo){
+            this.todos = this.todos.filter(function(todo){
+                return todo != thisTodo
+            })
+        }
     },
     created() {
         //this.todos.push(testTodo)
