@@ -6,13 +6,13 @@
                 <li class="list-group-item list-group-item-action active">
                     <strong class="">Your Tasks</strong> 
                     <span class="float-end" @click="wantAdd"><i :class="afficherChampNouveau ? 'fa-solid text-danger fa-circle-minus': 'fa-solid fa-square-plus fa-lg'" id="boutonAddOrReset"></i></span>
-                    <input v-show="afficherChampNouveau" type="text" class="form-control" name="" id="wantAddId" @keyup.enter="addNewTodo" v-model="todo.name">
+                    <input v-show="afficherChampNouveau" type="text" class="form-control" name="" id="wantAddId" @keyup.enter="addNewTodo" v-model="todo_.name">
                 </li>
                 <li v-for="todo in todos" :key="todo.name" class="list-group-item" :class="{achieve: todo.done}">
-                    <input v-model="todo.done" class="form-check-input me-1 mb-1 float-start" type="checkbox" value="" aria-label="...">
-                    <span class="float-start">{{ todo.name }}</span>
+                    <input v-model="todo.done" v-if="!todo.estEnModification" class="form-check-input me-1 mb-1 float-start" type="checkbox" value="" aria-label="...">
+                    <span v-if="!todo.estEnModification" class="float-start" @dblclick="wantUpdate(todo)">{{ todo.name }}</span>
                     <span class="float-end" @click="deleteTodo(todo)"><i class="fa-solid text-danger fa-circle-minus"></i></span>
-                    <input type="text" class="form-control" name="" id="">
+                    <input type="text" :value="todo.name" @keyup.enter="changeTodoName(todo)" v-if="todo.estEnModification" class="form-control" name="" id="champModif">
                 </li>
             </ul>
         </div>
@@ -27,13 +27,14 @@ h2{
 import { nextTick } from 'vue';
 
 
-//const testTodo = new Todo("Tache de test", false);
+const testTodo = {name: "Tache de test", done: false, estEnModification: false};
 export default {
     data() {
         return {
-            todo: {
+            todo_: {
                 name: "",
                 done: false,
+                estEnModification: false,
             },
             todos: [],
             afficherChampNouveau: false,
@@ -47,12 +48,29 @@ export default {
             })
             
         },
+        wantUpdate(todo){
+            todo.estEnModification = true;
+            nextTick(() => {
+                document.getElementById('champModif').focus();
+            });
+            
+        },
+        changeTodoName(todo){
+            
+            if(event.target.value != "") {
+                todo.name = event.target.value; 
+                todo.estEnModification = false;
+            }else{
+                alert('Inséré une valeur comme nom de votre tâche')
+            }
+
+        },
         addNewTodo() {
             this.todos.push({
-                name: this.todo.name,
-                done: this.done,
+                name: this.todo_.name,
+                done: false,
             })
-            this.todo.name = ""
+            this.todo_.name = ""
             this.afficherChampNouveau = false;
         },
         deleteTodo(thisTodo){
@@ -62,9 +80,10 @@ export default {
         }
     },
     created() {
-        //this.todos.push(testTodo)
+        this.todos.push(testTodo)
     }
 }
+
 
 </script>
 
